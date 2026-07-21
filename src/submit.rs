@@ -896,6 +896,15 @@ impl<'a> Submitter<'a> {
         .map(drop)
     }
 
+    pub fn register_msg_ring(&self, msg: &sys::io_uring_sqe) -> io::Result<()> {
+        self.execute_register(
+            sys::IORING_REGISTER_SEND_MSG_RING,
+            cast_ptr::<sys::io_uring_sqe>(msg) as _,
+            1,
+        )
+        .map(drop)
+    }
+
     /// Register a netdev hw rx queue for zerocopy.
     ///
     /// Available since 6.15.
